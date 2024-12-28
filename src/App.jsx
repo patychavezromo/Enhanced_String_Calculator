@@ -1,35 +1,38 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import './App.css';
+import mathFunction from './mathFunction';
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [inputValue, setInputValue] = useState('');
+  const [result, setResult] = useState('');
+
+  const processInput = () => {
+    const stringNumbers = inputValue.trim();
+    if (stringNumbers === '') {
+      setResult(mathFunction.simpleSummation([]));
+    }
+    const allNumbers = stringNumbers.split(',').map(stringNumber => parseInt(stringNumber)).filter(num => !isNaN(num));
+    setResult(mathFunction.simpleSummation(allNumbers));
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <h1>Enhanced String Calculator</h1>
+      <p> <b> Instructions: </b> Enter no number, one number, or two numbers separated by a comma:</p>
+      <input
+        id="input"
+        type="text"
+        placeholder="Write your numbers here."
+        value={inputValue}
+        onChange={(event) => setInputValue(event.target.value)}
+      />
+      <button onClick={processInput} className="btn">Process data</button>
+      <div id="result">
+        Result: {result}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
