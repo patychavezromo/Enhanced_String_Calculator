@@ -12,10 +12,10 @@ const mathFunction = {
       return 0;
     }
     const numbers = parseNumbers(stringNumbers);
-    if (numbers.length === 1) {
-      return numbers[0];
-    }
-    return numbers[0] + numbers[1];
+    return numbers.reduce(
+      (accumulator, currentNumber) => accumulator + currentNumber,
+      0
+    );
   },
 };
 
