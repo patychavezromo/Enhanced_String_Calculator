@@ -1,6 +1,6 @@
 const mathFunction = {
 
-    simpleSummation: (data) => {
+    add: (data) => {
         if (data.length === 0) {
             return 0;
         }

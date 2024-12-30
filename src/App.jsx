@@ -10,10 +10,10 @@ function App() {
   const processInput = () => {
     const stringNumbers = inputValue.trim();
     if (stringNumbers === '') {
-      setResult(mathFunction.simpleSummation([]));
+      setResult(mathFunction.add([]));
     }
     const allNumbers = stringNumbers.split(',').map(stringNumber => parseInt(stringNumber)).filter(num => !isNaN(num));
-    setResult(mathFunction.simpleSummation(allNumbers));
+    setResult(mathFunction.add(allNumbers));
   };
 
   return (
