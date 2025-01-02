@@ -1,6 +1,9 @@
 function parseNumbers(stringNumbers) {
-  const numbers = stringNumbers
-    .split(',')
+  const arrayStrings = stringNumbers.split(',');
+  const allStringsNumbers = arrayStrings.flatMap((string) =>
+    string.split('\\n')
+  );
+  const numbers = allStringsNumbers
     .map((stringNumber) => parseInt(stringNumber))
     .filter((num) => !isNaN(num));
   return numbers;

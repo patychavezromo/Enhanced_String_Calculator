@@ -15,8 +15,8 @@ function App() {
     <>
       <h1>Enhanced String Calculator</h1>
       <p>
-        <b> Instructions: </b> Enter no number, one number, or two numbers
-        separated by a comma:
+        <b> Instructions: </b> Enter no number, one number, or multiple numbers
+        separated by a comma (,) or a new line (\n):
       </p>
       <input
         id="input"
