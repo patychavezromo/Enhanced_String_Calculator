@@ -8,7 +8,11 @@ function App() {
 
   const processInput = () => {
     const stringNumbers = inputValue.trim();
-    setResult(mathFunction.add(stringNumbers));
+    try {
+      setResult(`Result: ${mathFunction.add(stringNumbers)}`);
+    } catch (error) {
+      setResult(`Error: ${error.message}`);
+    }
   };
 
   return (
@@ -16,7 +20,8 @@ function App() {
       <h1>Enhanced String Calculator</h1>
       <p>
         <b> Instructions: </b> Enter no number, one number, or multiple numbers
-        separated by a comma (,) or a new line (\n):
+        separated by any delimiter (e.g., comma, space, semicolon, new line,
+        etc.). :
       </p>
       <input
         id="input"
@@ -28,7 +33,7 @@ function App() {
       <button onClick={processInput} className="btn">
         Process data
       </button>
-      <div id="result">Result: {result}</div>
+      <div id="result">{result}</div>
     </>
   );
 }

@@ -27,7 +27,17 @@ function getDelimiter(stringNumber) {
   return stringNumber.substring(2, endIndex);
 }
 
+function checkForNegatives(numbers) {
+  return numbers.filter((number) => {
+    return number < 0;
+  });
+}
+
 function getSum(numbers) {
+  const negatives = checkForNegatives(numbers);
+  if (negatives.length > 0) {
+    throw new Error(`negatives not allowed: ${negatives.join(',')}`);
+  }
   return numbers.reduce(
     (accumulator, currentNumber) => accumulator + currentNumber,
     0
@@ -47,7 +57,12 @@ const mathFunction = {
     if (!stringNumbers.startsWith('//')) {
       numbers = parseNumbers(stringNumbers);
     }
-    return getSum(numbers);
+    try {
+      return getSum(numbers);
+    } catch (error) {
+      console.error(error.message);
+      throw error;
+    }
   },
 };
 
