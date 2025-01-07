@@ -57,8 +57,9 @@ const mathFunction = {
     if (!stringNumbers.startsWith('//')) {
       numbers = parseNumbers(stringNumbers);
     }
+    const numbersUnder1000 = numbers.filter((number) => number <= 1000);
     try {
-      return getSum(numbers);
+      return getSum(numbersUnder1000);
     } catch (error) {
       console.error(error.message);
       throw error;
