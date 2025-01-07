@@ -24,7 +24,14 @@ function parseNumbersWithDelimiter(delimiter, stringNumbers) {
 
 function getDelimiter(stringNumber) {
   const endIndex = stringNumber.indexOf('\\n');
-  return stringNumber.substring(2, endIndex);
+  const delimiterString = stringNumber.substring(2, endIndex);
+  if (
+    delimiterString[0] === '[' &&
+    delimiterString[delimiterString.length - 1] === ']'
+  ) {
+    return delimiterString.substring(1, delimiterString.length - 1);
+  }
+  return delimiterString;
 }
 
 function checkForNegatives(numbers) {
