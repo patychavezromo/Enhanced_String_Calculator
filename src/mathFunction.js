@@ -9,29 +9,38 @@ function parseNumbers(stringNumbers) {
   return numbers;
 }
 
-function parseNumbersWithDelimiter(delimiter, stringNumbers) {
-  const startIndex = stringNumbers.indexOf('\\n');
-  const newNumbersString = stringNumbers.substring(
-    startIndex + 2,
-    stringNumbers.length
-  );
-  const allNumberStrings = newNumbersString.split(delimiter);
-  const numbers = allNumberStrings
+function parseNumbersWithDelimiter(delimiters, stringNumbers) {
+  let newStringNumbers = '';
+  for (let i = 0; i < stringNumbers.length; i++) {
+    const isDelimiter = delimiters.has(stringNumbers[i]);
+    if (isDelimiter) {
+      newStringNumbers += ',';
+    }
+    if (!isDelimiter) {
+      newStringNumbers += stringNumbers[i];
+    }
+  }
+  let arrayStringNumbers = newStringNumbers.split(',');
+  const numbers = arrayStringNumbers
     .map((stringNumber) => parseInt(stringNumber))
     .filter((num) => !isNaN(num));
   return numbers;
 }
 
-function getDelimiter(stringNumber) {
-  const endIndex = stringNumber.indexOf('\\n');
-  const delimiterString = stringNumber.substring(2, endIndex);
-  if (
-    delimiterString[0] === '[' &&
-    delimiterString[delimiterString.length - 1] === ']'
-  ) {
-    return delimiterString.substring(1, delimiterString.length - 1);
+function getDelimiters(inputString) {
+  const endIndex = inputString.indexOf('\\n');
+  const delimiterString = inputString.substring(2, endIndex);
+  let allDelimiterString = new Set();
+  for (let i = 0; i < delimiterString.length; i++) {
+    if (
+      delimiterString[i] !== '[' &&
+      delimiterString[i] !== ']' &&
+      delimiterString[i] !== ' '
+    ) {
+      allDelimiterString.add(delimiterString[i]);
+    }
   }
-  return delimiterString;
+  return allDelimiterString;
 }
 
 function checkForNegatives(numbers) {
@@ -52,17 +61,22 @@ function getSum(numbers) {
 }
 
 const mathFunction = {
-  add: (stringNumbers) => {
-    if (stringNumbers === '') {
+  add: (inputString) => {
+    if (inputString === '') {
       return 0;
     }
     let numbers = [];
-    if (stringNumbers.startsWith('//')) {
-      const delimiter = getDelimiter(stringNumbers);
-      numbers = parseNumbersWithDelimiter(delimiter, stringNumbers);
+    if (inputString.startsWith('//')) {
+      const delimiters = getDelimiters(inputString);
+      const startIndexOfNumbersString = inputString.indexOf('\\n') + 2;
+      const stringNumbers = inputString.substring(
+        startIndexOfNumbersString,
+        inputString.length
+      );
+      numbers = parseNumbersWithDelimiter(delimiters, stringNumbers);
     }
-    if (!stringNumbers.startsWith('//')) {
-      numbers = parseNumbers(stringNumbers);
+    if (!inputString.startsWith('//')) {
+      numbers = parseNumbers(inputString);
     }
     const numbersUnder1000 = numbers.filter((number) => number <= 1000);
     try {
