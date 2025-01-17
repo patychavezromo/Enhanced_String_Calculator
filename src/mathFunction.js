@@ -10,18 +10,11 @@ function parseNumbers(stringNumbers) {
 }
 
 function parseNumbersWithDelimiter(delimiters, stringNumbers) {
-  let newStringNumbers = '';
-  for (let i = 0; i < stringNumbers.length; i++) {
-    const isDelimiter = delimiters.has(stringNumbers[i]);
-    if (isDelimiter) {
-      newStringNumbers += ',';
-    }
-    if (!isDelimiter) {
-      newStringNumbers += stringNumbers[i];
-    }
+  let splitStrings = [stringNumbers];
+  for (let delimiter of delimiters) {
+    splitStrings = splitStrings.flatMap((s) => s.split(delimiter));
   }
-  let arrayStringNumbers = newStringNumbers.split(',');
-  const numbers = arrayStringNumbers
+  const numbers = splitStrings
     .map((stringNumber) => parseInt(stringNumber))
     .filter((num) => !isNaN(num));
   return numbers;
@@ -30,14 +23,26 @@ function parseNumbersWithDelimiter(delimiters, stringNumbers) {
 function getDelimiters(inputString) {
   const endIndex = inputString.indexOf('\\n');
   const delimiterString = inputString.substring(2, endIndex);
-  let allDelimiterString = new Set();
-  for (let i = 0; i < delimiterString.length; i++) {
-    if (
-      delimiterString[i] !== '[' &&
-      delimiterString[i] !== ']' &&
-      delimiterString[i] !== ' '
-    ) {
-      allDelimiterString.add(delimiterString[i]);
+  let currentDelimiter = '';
+  let allDelimiterString = [];
+  let hasOpeningBracket = false;
+  for (
+    let stringIndex = 0;
+    stringIndex < delimiterString.length;
+    stringIndex++
+  ) {
+    if (delimiterString[stringIndex] === '[') {
+      currentDelimiter = '';
+      hasOpeningBracket = true;
+    }
+    if (delimiterString[stringIndex] === ']') {
+      if (hasOpeningBracket) {
+        allDelimiterString.push(currentDelimiter);
+        hasOpeningBracket = false;
+      }
+    }
+    if (hasOpeningBracket && delimiterString[stringIndex] !== '[') {
+      currentDelimiter = currentDelimiter + delimiterString[stringIndex];
     }
   }
   return allDelimiterString;
